@@ -1,0 +1,186 @@
+\documentclass[14pt]{extarticle}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{verbatimbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{setspace}
+\newenvironment{courier}{\fontfamily{pcr}\selectfont}{\par}
+\pagestyle{fancy}
+\usepackage{amsmath}
+\lhead{Astr 440}
+\chead{18 Nov. 2015}
+\rhead{Joey Mckenzie}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+
+\begin{document}
+	\begin{center}
+		\Large Assignment 4
+	\end{center}
+1. \textbf{Outline.} \\ \\
+$\bullet$ General Science Topics: \\
+$\indent \indent$ i. Age determination of stars giving key insight into evolution \\
+$\indent \indent$ ii. Understanding the mass-age relationship for stars \\
+$\indent \indent$ iii. How star clocks help determine useful data in other fields \\
+$\indent \indent$ iv. Peek into the infant universe/formation of baryonic matter \\ \\
+$\bullet$ Star Cluster Research Outcomes (Age Dating Techniques): \\
+$\indent \indent$ 1. Eclipsing Binaries \\
+$\indent \indent \indent$ i. Observation of eclipsing binaries in crowded fields \\
+$\indent \indent \indent$ ii. Measuring radial velocities and mass \\ 
+$\indent \indent \indent$ iii.
+$\indent \indent$ 2. Gyrochronology  \\
+$\indent \indent \indent$ i. Mass-rotation-age intimately related \\
+$\indent \indent \indent$ ii. Determination of star mass (binaries) and rotation rate \\
+$\indent \indent \indent$ iii. Bigger stars, faster rotation $\Rightarrow$ shorter lifespan \\
+$\indent \indent$ 3. White Dwarf Cooling Ages \\
+$\indent \indent \indent$ i. Obtain a measurement of the WD's luminosity \\
+$\indent \indent \indent$ ii. $t_{cool} \propto L^{-\frac{5}{7}}$ for WD \\
+$\indent \indent \indent$ iii. Comparison of observed ages with theoretical ages \\ \\
+$\bullet$ Scientific Application: \\
+$\indent \indent$ 1. Precise measurement of stellar ages \\
+$\indent \indent$ 2. Obtain an insight to how stars evolve \\
+$\indent \indent$ 3 .Pindown ages of observed clusters \\
+$\indent \indent$ 4 .Insight to formation of the early universe \\
+\pagebreak
+
+\noindent \textbf{2. Opacity.} \\
+
+Starting with the Rosseland mean opacity equation,
+\begin{equation}
+	\frac{1}{\bar{\kappa}} = \frac{ \int_{0}^{\infty} \frac{1}{\kappa_{\nu}} \frac{\partial B_{\nu}}{\partial T} \ d\nu}{\int_{0}^{\infty} \frac{\partial B_{\nu}}{\partial T} \ d\nu}
+\end{equation}
+we assume the two situations for $\kappa_{\nu,L} = \kappa_L$ and $\kappa_{\nu,H} = \kappa_H$ for a fraction $f$ having opacity $\kappa_L$: 
+$$ \frac{1}{\kappa_{\nu,L}} = f \cdot \frac{1}{\kappa_L} = \frac{f}{\kappa_H} $$
+$$ \frac{1}{\kappa_{\nu,H}} = (1-f) \cdot \frac{1}{\kappa_L} = \frac{1-f}{\kappa_H} $$
+The total opacity is then $\frac{1}{\kappa_{\nu}} = \frac{1}{\kappa_{\nu,L}} + \frac{1}{\kappa_{\nu,H}}$:
+\begin{equation}
+\frac{1}{\kappa_{\nu}} = \frac{f}{\kappa_L} + \frac{1-f}{\kappa_H}
+\end{equation}
+Plugging this into eqn. (1),
+$$
+\frac{1}{\bar{\kappa}} = \frac{ \int_{0}^{\infty} \left(\frac{f}{\kappa_L} + \frac{1-f}{\kappa_H} \right)  \frac{\partial B_{\nu}}{\partial T} \ d\nu}{\int_{0}^{\infty} \frac{\partial B_{\nu}}{\partial T} \ d\nu} = \left(\frac{f}{\kappa_L} + \frac{1-f}{\kappa_H} \right) \frac{ \int_{0}^{\infty} \frac{\partial B_{\nu}}{\partial T} \ d\nu}{\int_{0}^{\infty} \frac{\partial B_{\nu}}{\partial T} \ d\nu}
+$$
+\begin{equation}
+\frac{1}{\bar{\kappa}} = \frac{f}{\kappa_L} + \frac{1-f}{\kappa_H}
+\end{equation}
+Taking the reciprocal of eqn. (3) and multiplying both sides by $\frac{1}{\kappa_L}$, the expression becomes,
+$$ \bar{ \kappa} = \frac{1}{\frac{f}{\kappa_L} + \frac{1-f}{\kappa_H}} \Rightarrow \frac{\bar{\kappa}}{\kappa_L} = \frac{1}{f + (1-f)\frac{\kappa_L}{\kappa_H}} $$
+Letting $\kappa_H=100\kappa_L$, the following simple code was used to produce the graph below to compare $\frac{\bar{\kappa}}{\kappa_L}$:
+
+\pagebreak
+\lstinputlisting[basicstyle=\ttfamily\small]{problem1v2.f90}
+\pagebreak
+\pagebreak
+\begin{figure}[H]
+	\centerline{\includegraphics[scale=0.9]{k_vs_f}}
+	From the graph, at fractions approaching 1, $\bar{\kappa}$ will approximately be equivalent to $\kappa_L$, where continuum opacity sources dominate, allowing most frequencies of light to pass through relatively easy in the outer layers of the star producing a continuous spectra. High opacity represents $\approx$ 10\%\ of the total opacity graphed, inferring that $\bar{\kappa}$ does not sensitivity depend on fluctuations of high opacity.
+\end{figure} 
+\pagebreak	
+3. \textbf{ Radiation in the Outer Layers.} \\ \\
+a) Assuming surface conditions for a star, $\ell_r \approx L$ and $r \approx R$, the net flux can be directly related to the photosphere temperature $T_{\text{eff}}$ as well as the luminosity at the surface, assuming no energy generation,
+\begin{equation} \tag{1}
+F_{net} \approx \sigma T^{4}_{\text{eff}} = \frac{L}{4\pi R^2}
+\end{equation} 
+The key here being that the net flux through two spherical layers within the photosphere is constant, which allows for the use of the Stefan-Boltzmann Law. \\ \\
+b) Starting from the radiative transport equation with surface conditions for a star,
+\begin{equation} \tag{2}
+\frac{dT}{dr} = -\frac{3}{16\pi ac} \cdot \frac{\kappa \rho L}{R^2T^3}
+\end{equation}
+Eqn. (1) can be arranged so that 
+$$ \frac{L}{R^2} = 4\pi\sigma T_{\text{eff}}^4 $$
+and this can be substituted into Eqn. (2) to obtain,
+$$ \frac{dT}{dr} = - \frac{3}{16\pi ac} \cdot \frac{\kappa \rho \cdot 4\pi\sigma T^{4}_{\text{eff}}}{T^3} = -\frac{3}{4ac}\cdot\frac{\kappa \rho \sigma T^{4}_{\text{eff}}}{T^3} $$ 
+Again, rearranging this expression and substituting $a=\frac{4\sigma}{c}$, we get
+\begin{equation} \tag{3}
+\frac{dT}{dr} = - \frac{3}{16} \cdot \kappa\rho \cdot \frac{T^{4}_{\text{eff}}}{T^3}
+\end{equation}
+Using the definition for optical depth and letting $ds = -dr$ be the photon distance traveled between outer layers in the star, with the negative sign accounting for the optical depth \textit{increasing} towards the center, with the path length of the traveling photon radially outward from the star's center. Eqn. (3) can then be rearranged, $\frac{dr}{d\tau}$
+$$d\tau = -\kappa\rho \ dr \Rightarrow \frac{dr}{d\tau} =- \frac{1}{\kappa\rho} $$
+Multiplying this expression through by both sides of Eqn. (3) and making mathematicians cringe, we obtain
+$$ \frac{dr}{d\tau} \cdot \frac{dT}{dr} = - \frac{3}{16} \cdot -\frac{\kappa\rho}{\kappa\rho} \cdot \frac{T^{4}_{\text{eff}}}{T^3} \Rightarrow \boxed{ \frac{dT}{d\tau} = \frac{3}{16} \frac{T^{4}_{\text{eff}}}{T^3} } $$\\
+c) Rearranging this differential equation and integrating to obtain a general solution for the function $T(\tau)$,
+$$ \int T^3 dT = \frac{3}{16} T^4_{\text{eff}} \int d\tau \Rightarrow \frac{T^4}{4}= \frac{3}{16} T^4_{\text{eff}} \ \tau + C $$
+where C is an arbitrary constant. Solving for $T$,
+\begin{equation}
+T^4 = \frac{3}{4}  T^4_{\text{eff}} \ \tau + K
+\end{equation} 
+Where K is, again, another constant. Applying the boundary condition, $T^4(\tau=\frac{2}{3})= T^4_{\text{eff}}$ for this general and solving for the unknown constant,
+$$ T^4_{\text{eff}} = \frac{3}{4}T^4_{\text{eff}} \cdot \frac{2}{3} + K \Rightarrow K = \frac{1}{2}T^4_{\text{eff}} $$
+Substituting this into equation (4) and factoring out a factor of $\frac{3}{4}T^4_{\text{eff}}$,
+$$ T^4 = \frac{3}{4}T^4_{\text{eff}} \ \tau + \frac{1}{2} T^4_{\text{eff}} $$
+We arrive at the exact solution: 
+\begin{equation}
+\boxed{ T^4 = \frac{3}{4}T^4_{\text{eff}} \left( \tau + \frac{2}{3} \right)  }
+\end{equation}
+d) This relation holds true in the photosphere also in the presence of convective outer layers due to $\tau$ only depending on the mean free path, $\ell_m$, of photons. For the top of the photosphere where $\tau \approx 0$, $\boxed{T=\frac{1}{2} T_{\text{eff}}}$. \\ \\
+e) The following code was used to obtain the graph of $T$ vs. $\log\tau$:
+\lstinputlisting[basicstyle=\ttfamily\small]{problem2.f90}
+\pagebreak
+\begin{figure}[H]
+	\centerline{\includegraphics[scale=0.6]{T_vs_logtau}}
+\end{figure}
+\pagebreak
+4. \textbf{Stellar Model Calculations.} \\ \\
+a) Parameters for each star:
+\begin{table}[H]
+	\caption{STATSTAR Star Comparison}
+	\centering
+	\begin{tabular} {|c|c|c|c|c|c|}
+		\hline
+		Mass: & $\rho_c$ (g/cm$^3$) & $P_c$ (dynes/cm$^2$) & $T_c$ (K) & $L/L_{\odot}$ & $R/R_{\odot}$ \\
+		\hline 
+		1.0 $M_\odot$ & 77.2529 & 1.46284$\times 10^{17}$ & 1.41421$\times 10^7$ & 0.86071 & 1.020998 \\
+		2.5 $M_\odot$ & 51.2330 & 1.61620$\times 10^{17}$ & 2.35600$\times 10^7$ & 56.805 & 1.431432 \\
+		\hline
+	\end{tabular}
+\end{table}
+The 2.5$M_{\odot}$ hold both the higher radius and luminosity, as well as the lower density, agreeing with observations of high mass stars being higher luminosity and radius than lower stars yet surprisingly being less dense than lower mass stars. \\
+
+Roughly estimating the values at which $m_r/M$ and $\ell_r/L = 50\%$  and $99\%$ by looking at the \texttt{starmodl.dat} and data files produced from my code for each star (in terms of $r/R$):
+
+\begin{table}[H]
+	\caption{STATSTAR Star Comparison of $m_r/M$}
+	\centering
+	\begin{tabular} {|c|c|c|}
+		\hline
+		Mass: & $m_r/M = 50\%$ & $m_r/M = 99\%$  \\
+		\hline 
+		1.0 $M_\odot$ & 0.259 & 0.640  \\ 
+		2.5 $M_\odot$ & 0.278 & 0.659 \\
+		\hline
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\caption{STATSTAR Star Comparison of $\ell{r}/L$} 
+	\centering
+	\begin{tabular} {|c|c|c|}
+		\hline
+		Mass: & $\ell{r}/L = 50\%$ & $\ell{r}/L = 99\%$  \\
+		\hline 
+		\multirow{2}{*}{1.0 $M_\odot$} & $r/R \approx$ 0.119  & $r/R \approx$ 0.288 \\ 
+		& $m_r/M\approx$ 0.0850 & $m_r/M \approx$ 0.594 \\
+		\hline
+		\multirow{2}{*}{2.5 $M_\odot$} & $r/R \approx$ 0.0880 & $r/R \approx$ 0.288 \\
+		& $m_r/M\approx$ 0.0270 &  $m_r/M \approx$ 0.525 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\pagebreak
+\noindent b) 
+\begin{figure}[H]
+	\centerline{\includegraphics[scale=0.6]{statstargraphs}}
+\end{figure}
+\noindent c) Convection zones for $1.0M_\odot$: 
+$$ \Rightarrow 0 < m_r/M < 0.027 $$
+Convection zones for $2.5M_\odot$:
+$$ \Rightarrow 0 < m_r/M < 0.161 $$
+
+\pagebreak
+\lstinputlisting[basicstyle=\ttfamily\small]{congratulations.dat}
+	
+\end{document}
